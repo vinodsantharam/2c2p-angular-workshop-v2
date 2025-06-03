@@ -4,6 +4,7 @@ import { LucideAngularModule, Eye, Trash2 } from 'lucide-angular'; // Import Luc
 
 // Define the Video interface
 export interface Video {
+  id: string;
   name: string;
   language: string;
   genres: string[];

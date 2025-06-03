@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Video } from '../user-videos/user-videos.component'; // Import the existing Video interface
 
 @Component({
   selector: 'app-tile-videos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   template: `
     <div class="py-6">
       <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">Search Results</h3>
@@ -13,7 +14,11 @@ import { Video } from '../user-videos/user-videos.component'; // Import the exis
         No videos to display.
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <div *ngFor="let video of videos" class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out">
+        <a *ngFor="let video of videos" 
+           [routerLink]="['/video', video.id]" 
+           class="block bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
+           attr.aria-label="View details for {{ video.name }}"
+        >
           <img 
             [src]="video.image || 'https://via.placeholder.com/300x200?text=No+Image'" 
             alt="{{ video.name }}" 
@@ -27,7 +32,7 @@ import { Video } from '../user-videos/user-videos.component'; // Import the exis
               <span class="text-sm text-gray-600 dark:text-gray-400">{{ video.rating }}/10</span>
             </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   `,
