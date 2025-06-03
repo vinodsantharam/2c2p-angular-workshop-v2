@@ -2,11 +2,12 @@ import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { HeaderComponent } from "./header/header.component";
 import { UserVideosComponent, Video } from "./user-videos/user-videos.component";
+import { SearchComponent } from "./search/search.component";
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, UserVideosComponent],
+  imports: [RouterOutlet, HeaderComponent, UserVideosComponent, SearchComponent],
   templateUrl: './app.component.html'
 })
 export class AppComponent {
@@ -51,4 +52,10 @@ export class AppComponent {
       image: "https://via.placeholder.com/150/FFFF33/000000?Text=WebFuture"
     }
   ];
+
+  // Handler for the search event (optional, for now just logs)
+  onSearchPerformed(searchTerm: string) {
+    console.log("Search performed in AppComponent:", searchTerm);
+    // Here you would typically filter sampleVideos or fetch new data
+  }
 }
