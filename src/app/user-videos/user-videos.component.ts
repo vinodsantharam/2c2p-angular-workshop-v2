@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common'; // For ngFor, ngIf, etc.
+import { LucideAngularModule, Eye, Trash2 } from 'lucide-angular'; // Import LucideAngularModule, Eye icon, and Trash2 icon
 
 // Define the Video interface
 export interface Video {
@@ -15,7 +16,7 @@ export interface Video {
 @Component({
   selector: 'app-user-videos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule], // Add LucideAngularModule
   template: `
     <div class="container mx-auto p-4">
       <h2 class="text-2xl font-semibold mb-6 text-gray-800 dark:text-gray-100">My Videos</h2>
@@ -30,11 +31,12 @@ export interface Video {
               <th scope="col" class="px-6 py-3">Rating</th>
               <th scope="col" class="px-6 py-3">Status</th>
               <th scope="col" class="px-6 py-3">Ended</th>
+              <th scope="col" class="px-6 py-3 text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngIf="!videos || videos.length === 0" class="bg-white dark:bg-gray-800">
-              <td colspan="7" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+              <td colspan="8" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                 No videos available.
               </td>
             </tr>
@@ -61,6 +63,22 @@ export interface Video {
                 </span>
               </td>
               <td class="px-6 py-4">{{ video.ended }}</td>
+              <td class="px-6 py-4 text-center">
+                <button 
+                  (click)="onViewDetails(video)" 
+                  class="p-1 text-blue-600 dark:text-blue-500 hover:text-blue-800 dark:hover:text-blue-300 focus:outline-none mr-2"
+                  aria-label="View Details"
+                >
+                  <i-lucide [img]="EyeIcon" [size]="20" class="inline-block"></i-lucide>
+                </button>
+                <button 
+                  (click)="onDeleteVideo(video)" 
+                  class="p-1 text-red-600 dark:text-red-500 hover:text-red-800 dark:hover:text-red-300 focus:outline-none"
+                  aria-label="Delete Video"
+                >
+                  <i-lucide [img]="Trash2Icon" [size]="20" class="inline-block"></i-lucide>
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -74,4 +92,19 @@ export interface Video {
 })
 export class UserVideosComponent {
   @Input() videos: Video[] = [];
+  @Output() viewDetails = new EventEmitter<Video>();
+  @Output() deleteVideo = new EventEmitter<Video>();
+
+  readonly EyeIcon = Eye;
+  readonly Trash2Icon = Trash2;
+
+  onViewDetails(video: Video) {
+    this.viewDetails.emit(video);
+    console.log('View details for:', video);
+  }
+
+  onDeleteVideo(video: Video) {
+    this.deleteVideo.emit(video);
+    console.log('Delete video:', video);
+  }
 }
