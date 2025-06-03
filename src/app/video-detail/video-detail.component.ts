@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router'; // Import RouterModule for routerLink
 import { Video } from '../user-videos/user-videos.component';
@@ -43,6 +43,17 @@ import { sampleVideosData } from '../app.component'; // Correctly import sampleV
               </span>
             </p>
             <p class="mt-2 text-gray-600 dark:text-gray-400">Ended: {{ video.ended }}</p>
+            
+            <!-- Add to My Videos Button -->
+            <div class="mt-6">
+              <button 
+                (click)="addToMyVideos()" 
+                class="px-6 py-3 text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-800"
+              >
+                Add to My Videos
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
@@ -61,6 +72,7 @@ import { sampleVideosData } from '../app.component'; // Correctly import sampleV
 })
 export class VideoDetailComponent implements OnInit {
   video: Video | undefined;
+  @Output() addVideoToUserList = new EventEmitter<Video>();
 
   constructor(private route: ActivatedRoute) {}
 
@@ -68,6 +80,14 @@ export class VideoDetailComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.video = sampleVideosData.find((v: Video) => v.id === id); // Added type for v
+    }
+  }
+
+  addToMyVideos(): void {
+    if (this.video) {
+      this.addVideoToUserList.emit(this.video);
+      console.log('Emitting addVideoToUserList for:', this.video);
+      // Potentially disable button or show feedback, or navigate
     }
   }
 }
