@@ -1,4 +1,4 @@
-import { Component, Renderer2, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Renderer2, Inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 
 @Component({
@@ -19,34 +19,45 @@ import { CommonModule, DOCUMENT } from '@angular/common';
     /* You can add component-specific styles here if needed */
   `]
 })
-export class HeaderComponent {
-  isDarkMode = false;
+export class HeaderComponent implements OnInit {
+  isDarkMode = true; // Default to dark, will be updated by system check on init
 
-  constructor(private renderer: Renderer2, @Inject(DOCUMENT) private document: Document, @Inject(PLATFORM_ID) private platformId: Object) {
-    this.checkInitialMode();
-  }
+  constructor(
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit() {
-    // ngOnInit can be used for other initialization logic if needed
-    // Initial dark mode check is handled by constructor calling checkInitialMode
+    this.setInitialThemeBasedOnSystem();
   }
 
-  checkInitialMode() {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        this.isDarkMode = savedTheme === 'dark';
+  setInitialThemeBasedOnSystem() {
+    // Check for SSR/browser environment first
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)');
+
+      if (prefersDark.matches) {
+        this.isDarkMode = true;
+      } else if (prefersLight.matches) {
+        this.isDarkMode = false;
       } else {
-        this.isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        // Default to dark if no explicit system preference is matched
+        this.isDarkMode = true; 
       }
-      this.updateRenderMode();
+    } else {
+      // Fallback for environments without window.matchMedia (e.g., SSR or very old browsers)
+      // isDarkMode is already true by default as initialized
+      this.isDarkMode = true; 
     }
+    this.updateRenderMode();
   }
 
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
-    localStorage.setItem('theme', this.isDarkMode ? 'dark' : 'light');
     this.updateRenderMode();
+    // No localStorage interaction, no listening to system changes after this point
   }
 
   updateRenderMode() {
@@ -56,4 +67,7 @@ export class HeaderComponent {
       this.renderer.removeClass(this.document.documentElement, 'dark');
     }
   }
+  
+  // ngOnDestroy is not needed anymore as there are no persistent listeners
 }
+
