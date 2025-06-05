@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common'; // For ngFor, ngIf, etc.
 import { LucideAngularModule, Eye, Trash2 } from 'lucide-angular'; // Import LucideAngularModule, Eye icon, and Trash2 icon
-import { Video } from '../../services/video.model';
+import { Video } from '../../services/search-video.model';
 
 @Component({
   selector: 'app-user-videos',

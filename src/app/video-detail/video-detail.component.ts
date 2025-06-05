@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router'; // Import RouterModule for routerLink
-import { sampleVideosData } from '../app.component'; // Correctly import sampleVideosData
-import { Video } from '../../services/video.model';
+import { VideoDetailViewModel } from './video-detail.viewmodel';
+import { VideoDetailService } from './video-detail.service';
 
 @Component({
   selector: 'app-video-detail',
@@ -71,15 +71,17 @@ import { Video } from '../../services/video.model';
   styles: []
 })
 export class VideoDetailComponent implements OnInit {
-  video: Video | undefined;
-  @Output() addVideoToUserList = new EventEmitter<Video>();
+  video: VideoDetailViewModel | undefined;
+  @Output() addVideoToUserList = new EventEmitter<VideoDetailViewModel>();
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private videoService: VideoDetailService) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.video = sampleVideosData.find((v: Video) => v.id === id); // Added type for v
+      this.videoService.getVideoDetails(id).subscribe((video) => {
+        this.video = video;
+      })
     }
   }
 

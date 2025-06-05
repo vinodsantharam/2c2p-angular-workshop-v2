@@ -14,7 +14,7 @@ export class TileVideoService {
         map((videos) => {
             return videos.map((video) => {
                 return {
-                    id: video.show.id,
+                    id: video.show.externals.imdb,
                     name: video.show.name,
                     image: video.show.image.medium,
                     rating: Math.round(video.score * 10)

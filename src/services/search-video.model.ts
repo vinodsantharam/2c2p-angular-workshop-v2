@@ -82,10 +82,9 @@ type Video = {
   image: string; // URL
 };
 
-
-type SearchVideoResult ={
-    score: number;
-    show: Show;
-}
+type SearchVideoResult = {
+  score: number;
+  show: Show;
+};
 
 export type { Video, SearchVideoResult, Show };
