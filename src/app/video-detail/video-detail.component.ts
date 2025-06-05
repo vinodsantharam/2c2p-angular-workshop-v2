@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router'; // Import RouterModule for routerLink
 import { VideoDetailViewModel } from './video-detail.viewmodel';
 import { VideoDetailService } from './video-detail.service';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-video-detail',
@@ -72,9 +73,8 @@ import { VideoDetailService } from './video-detail.service';
 })
 export class VideoDetailComponent implements OnInit {
   video: VideoDetailViewModel | undefined;
-  @Output() addVideoToUserList = new EventEmitter<VideoDetailViewModel>();
 
-  constructor(private route: ActivatedRoute, private videoService: VideoDetailService) {}
+  constructor(private route: ActivatedRoute, private videoService: VideoDetailService, private accountService: AccountService) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -87,9 +87,13 @@ export class VideoDetailComponent implements OnInit {
 
   addToMyVideos(): void {
     if (this.video) {
-      this.addVideoToUserList.emit(this.video);
-      console.log('Emitting addVideoToUserList for:', this.video);
-      // Potentially disable button or show feedback, or navigate
+      this.accountService.saveVideo(this.video.id).subscribe((result) => {
+        if (result) {
+          console.log('Video added to my videos');
+        } else {
+          console.log('Failed to add video to my videos');
+        }
+      })
     }
   }
 }

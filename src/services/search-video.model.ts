@@ -71,20 +71,9 @@ type Previousepisode = {
   name: string;
 };
 
-type Video = {
-  id: string;
-  name: string;
-  language: string;
-  genres: string[];
-  rating: number;
-  status: string;
-  ended: string; // Could be a Date object or string, using string for simplicity
-  image: string; // URL
-};
-
 type SearchVideoResult = {
   score: number;
   show: Show;
 };
 
-export type { Video, SearchVideoResult, Show };
+export type { SearchVideoResult, Show };

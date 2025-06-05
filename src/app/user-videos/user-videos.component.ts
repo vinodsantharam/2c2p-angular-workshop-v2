@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common'; // For ngFor, ngIf, etc.
 import { LucideAngularModule, Eye, Trash2 } from 'lucide-angular'; // Import LucideAngularModule, Eye icon, and Trash2 icon
-import { Video } from '../../services/search-video.model';
+import { UserVideoViewModel } from './video.model';
 
 @Component({
   selector: 'app-user-videos',
@@ -64,7 +64,7 @@ import { Video } from '../../services/search-video.model';
                 <button 
                   (click)="onDeleteVideo(video)" 
                   class="p-1 text-red-600 dark:text-red-500 hover:text-red-800 dark:hover:text-red-300 focus:outline-none"
-                  aria-label="Delete Video"
+                  aria-label="Delete UserVideoViewModel"
                 >
                   <i-lucide [img]="Trash2Icon" [size]="20" class="inline-block"></i-lucide>
                 </button>
@@ -75,25 +75,22 @@ import { Video } from '../../services/search-video.model';
       </div>
     </div>
   `,
-  styles: [
-    // Component-specific styles can go here if needed
-    // Tailwind utility classes are primarily used in the template
-  ]
+  styles: []
 })
 export class UserVideosComponent {
-  @Input() videos: Video[] = [];
-  @Output() viewDetails = new EventEmitter<Video>();
-  @Output() deleteVideo = new EventEmitter<Video>();
+  @Input() videos: UserVideoViewModel[] = [];
+  @Output() viewDetails = new EventEmitter<UserVideoViewModel>();
+  @Output() deleteVideo = new EventEmitter<UserVideoViewModel>();
 
   readonly EyeIcon = Eye;
   readonly Trash2Icon = Trash2;
 
-  onViewDetails(video: Video) {
+  onViewDetails(video: UserVideoViewModel) {
     this.viewDetails.emit(video);
     console.log('View details for:', video);
   }
 
-  onDeleteVideo(video: Video) {
+  onDeleteVideo(video: UserVideoViewModel) {
     this.deleteVideo.emit(video);
     console.log('Delete video:', video);
   }
