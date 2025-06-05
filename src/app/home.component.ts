@@ -33,12 +33,9 @@ export class HomeComponent implements OnInit {
   }
 
   handleViewVideoDetails(video: UserVideoViewModel) {
-    console.log("Viewing details for video in AppComponent:", video);
   }
 
   handleDeleteVideo(videoToDelete: UserVideoViewModel) {
-    console.log("Deleting video in AppComponent:", videoToDelete);
-    // this.sampleVideos = this.sampleVideos.filter(video => video.id !== videoToDelete.id);
   }
 
   private searchVideos(searchTerm: string) {
@@ -47,3 +44,5 @@ export class HomeComponent implements OnInit {
     });
   }
 }
+
+// https://api.open-meteo.com/v1/forecast?latitude=13.736717&longitude=100.523186&current=temperature_2m
