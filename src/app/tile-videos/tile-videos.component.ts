@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Video } from '../user-videos/user-videos.component'; // Import the existing Video interface
+import { TileVideoViewModel } from './tile-video.viewmodel';
 
 @Component({
   selector: 'app-tile-videos',
@@ -41,5 +41,5 @@ import { Video } from '../user-videos/user-videos.component'; // Import the exis
   ]
 })
 export class TileVideosComponent {
-  @Input() videos: Video[] = [];
+  @Input() videos: TileVideoViewModel[] = [];
 }

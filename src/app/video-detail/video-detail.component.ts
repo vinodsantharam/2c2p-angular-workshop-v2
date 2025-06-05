@@ -1,8 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router'; // Import RouterModule for routerLink
-import { Video } from '../user-videos/user-videos.component';
 import { sampleVideosData } from '../app.component'; // Correctly import sampleVideosData
+import { Video } from '../../services/video.model';
 
 @Component({
   selector: 'app-video-detail',

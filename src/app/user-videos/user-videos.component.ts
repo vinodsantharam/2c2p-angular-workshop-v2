@@ -1,18 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common'; // For ngFor, ngIf, etc.
 import { LucideAngularModule, Eye, Trash2 } from 'lucide-angular'; // Import LucideAngularModule, Eye icon, and Trash2 icon
-
-// Define the Video interface
-export interface Video {
-  id: string;
-  name: string;
-  language: string;
-  genres: string[];
-  rating: number;
-  status: string;
-  ended: string; // Could be a Date object or string, using string for simplicity
-  image: string; // URL
-}
+import { Video } from '../../services/video.model';
 
 @Component({
   selector: 'app-user-videos',

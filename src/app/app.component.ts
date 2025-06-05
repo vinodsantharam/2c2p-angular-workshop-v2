@@ -1,9 +1,11 @@
-import { Component } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { HeaderComponent } from "./header/header.component";
-import { UserVideosComponent, Video } from "./user-videos/user-videos.component";
+import { UserVideosComponent } from "./user-videos/user-videos.component";
 import { SearchComponent } from "./search/search.component";
 import { TileVideosComponent } from "./tile-videos/tile-videos.component";
+import { Video } from "../services/video.model";
+import { VideoService } from "../services/video.service";
 
 // Exporting sampleVideos for VideoDetailComponent to use directly (temporary for demo)
 export const sampleVideosData: Video[] = [
@@ -73,36 +75,17 @@ export const sampleVideosData: Video[] = [
   selector: "app-root",
   standalone: true,
   imports: [
-    RouterOutlet, 
-    HeaderComponent, 
-    UserVideosComponent, 
-    SearchComponent, 
-    TileVideosComponent
-  ],
+    RouterOutlet,
+    HeaderComponent
+],
   templateUrl: './app.component.html'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = "workshop";
   sampleVideos: Video[] = sampleVideosData; // Use the exported constant
 
-  // Handler for the search event (optional, for now just logs)
-  onSearchPerformed(searchTerm: string) {
-    console.log("Search performed in AppComponent:", searchTerm);
-    // Placeholder for search filtering logic
-  }
 
-  handleViewVideoDetails(video: Video) {
-    console.log("Viewing details for video in AppComponent:", video);
-    // Placeholder for view details logic (e.g., open modal, navigate)
-  }
-
-  handleDeleteVideo(videoToDelete: Video) {
-    console.log("Deleting video in AppComponent:", videoToDelete);
-    this.sampleVideos = this.sampleVideos.filter(video => video.id !== videoToDelete.id);
-  }
-
-  // Method to get video by ID, to be used by VideoDetailComponent (conceptually)
-  getVideoById(id: string): Video | undefined {
-    return this.sampleVideos.find(video => video.id === id);
+  ngOnInit(): void {
+    
   }
 }
