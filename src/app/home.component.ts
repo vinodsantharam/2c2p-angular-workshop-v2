@@ -14,7 +14,7 @@ import { UserVideoViewModel } from "./user-videos/video.model";
   template: `
     <app-search (searchSubmitted)="onSearchPerformed($event)"></app-search>
     <app-tile-videos [videos]="searchResultTileVideosViewModels"></app-tile-videos>
-    <app-user-videos [videos]="userVideos"></app-user-videos>
+    <app-user-videos [videos]="userVideos" (viewDetails)="onViewVideoDetails($event)" (deleteVideo)="onDeleteVideo($event)"></app-user-videos>
   `,
 })
 export class HomeComponent implements OnInit {
@@ -32,10 +32,11 @@ export class HomeComponent implements OnInit {
     this.searchVideos(searchTerm);
   }
 
-  handleViewVideoDetails(video: UserVideoViewModel) {
+  onViewVideoDetails(video: UserVideoViewModel) {
   }
 
-  handleDeleteVideo(videoToDelete: UserVideoViewModel) {
+  onDeleteVideo(videoToDelete: UserVideoViewModel) {
+    this.userVideoService.deleteVideo(videoToDelete);
   }
 
   private searchVideos(searchTerm: string) {

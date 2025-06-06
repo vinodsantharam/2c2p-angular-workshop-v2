@@ -6,6 +6,7 @@ import { UserVideoViewModel } from "./video.model";
   providedIn: 'root'
 })
 export class UserVideoService {
+  
   constructor(private accountService: AccountService) {}
 
   public getVideos(): UserVideoViewModel[] {
@@ -38,5 +39,9 @@ export class UserVideoService {
       }
     }
     return undefined;
+  }
+
+  public deleteVideo(videoToDelete: UserVideoViewModel) {
+    this.accountService.removeVideo(videoToDelete.id);
   }
 }
