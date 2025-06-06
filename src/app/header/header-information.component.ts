@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { HeaderInformationService } from './header-information.service';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule } from 'lucide-angular';
 
@@ -23,13 +22,6 @@ import { LucideAngularModule } from 'lucide-angular';
   styles: ``
 })
 export class HeaderInformationComponent {
-    public weatherTemperature: string = '';
-    public videoCount: number = 0;
-
-    constructor(private headerInformationService: HeaderInformationService) {
-        this.headerInformationService.getHeaderInformation().subscribe((headerInformation) => {
-            this.weatherTemperature = headerInformation.weatherTemperature;
-            this.videoCount = headerInformation.videoCount;
-        });
-    }
+    @Input() weatherTemperature: string = '';
+    @Input() videoCount: number = 0;
 }

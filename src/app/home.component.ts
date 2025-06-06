@@ -9,6 +9,7 @@ import { UserVideoViewModel } from "./user-videos/video.model";
 import { Router } from "@angular/router";
 import { tap } from "rxjs";
 import { filter } from "rxjs";
+import { VideoCounterService } from "../services/video-counter.service";
 
 @Component({
   selector: "app-home",
@@ -24,6 +25,7 @@ export class HomeComponent implements OnInit {
 
   private videoService = inject(TileVideoService);
   private userVideoService = inject(UserVideoService);
+  private videoCounterService = inject(VideoCounterService);
 
   searchResultTileVideosViewModels: TileVideoViewModel[] = [];
   userVideos: UserVideoViewModel[] = [];
@@ -32,6 +34,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.userVideos = this.getUserVideos();
+    this.updateVideoCount(this.userVideos.length)
   }
 
   onSearchPerformed(searchTerm: string) {
@@ -39,7 +42,11 @@ export class HomeComponent implements OnInit {
   }
 
   onAddToList($event: TileVideoViewModel) {
-    this.userVideoService.addVideo($event).pipe(filter((result) => result), tap(() => this.userVideos = this.getUserVideos())).subscribe();
+    this.userVideoService.addVideo($event).pipe(
+      filter((result) => result), 
+      tap(() => this.userVideos = this.getUserVideos()),
+      tap(() => this.updateVideoCount(this.userVideos.length))
+    ).subscribe();
   }
 
   onViewVideoDetails(video: UserVideoViewModel) {
@@ -49,6 +56,7 @@ export class HomeComponent implements OnInit {
   onDeleteVideo(videoToDelete: UserVideoViewModel) {
     this.userVideoService.deleteVideo(videoToDelete);
     this.userVideos = this.getUserVideos();
+    this.updateVideoCount(this.userVideos.length);
   }
 
   private searchVideos(searchTerm: string) {
@@ -59,5 +67,9 @@ export class HomeComponent implements OnInit {
 
   private getUserVideos(): UserVideoViewModel[] {
     return this.userVideoService.getVideos();
+  }
+
+  private updateVideoCount(numberOfVideos: number): void {
+    this.videoCounterService.updateVideoCount(numberOfVideos);
   }
 }

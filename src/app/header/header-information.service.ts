@@ -1,19 +1,25 @@
 import { Injectable } from '@angular/core';
 import { WeatherService } from '../../services/weather.service';
-import { AccountService } from '../../services/account.service';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs';
 import { HeaderInformationViewModel } from './header-information.viewmodel';
+import { VideoCounterService } from '../../services/video-counter.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeaderInformationService {
-  constructor(private weatherService: WeatherService, private accountService: AccountService) { }
+  private readonly latitude = 13.736717; // Bangkok, Thailand
+  private readonly longitude = 100.523186; // Bangkok, Thailand
+
+  constructor(private weatherService: WeatherService, private videoCounterService: VideoCounterService) { }
 
   getHeaderInformation(): Observable<HeaderInformationViewModel> {
-    return this.weatherService.getWeatherByCoordinates(13.736717, 100.523186).pipe(
-      map((weather) => ({ weatherTemperature: weather.current.temperature_2m.toString(), videoCount: this.accountService.getVideos().length }))
-    );
+    return combineLatest([
+      this.weatherService.getWeatherByCoordinates(this.latitude, this.longitude).pipe(
+        map((weather) => ({ weatherTemperature: weather.current.temperature_2m.toString() }))
+      ),
+      this.videoCounterService.videoCountObservable()
+    ]).pipe(map(([weather, videoCount]) => ({ weatherTemperature: weather.weatherTemperature, videoCount: videoCount ?? 0 })));  
   }
 }   
