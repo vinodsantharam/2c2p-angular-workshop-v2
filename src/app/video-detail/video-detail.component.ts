@@ -1,9 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router'; // Import RouterModule for routerLink
+import { ActivatedRoute, Router, RouterModule } from '@angular/router'; // Import RouterModule for routerLink
 import { VideoDetailViewModel } from './video-detail.viewmodel';
 import { VideoDetailService } from './video-detail.service';
 import { AccountService } from '../../services/account.service';
+import { tap } from 'rxjs';
+import { VideoCounterService } from '../../services/video-counter.service';
 
 @Component({
   selector: 'app-video-detail',
@@ -74,26 +76,37 @@ import { AccountService } from '../../services/account.service';
 export class VideoDetailComponent implements OnInit {
   video: VideoDetailViewModel | undefined;
 
-  constructor(private route: ActivatedRoute, private videoService: VideoDetailService, private accountService: AccountService) {}
+  constructor(private route: ActivatedRoute, private videoService: VideoDetailService, private accountService: AccountService, private router: Router, private videoCounterService: VideoCounterService) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.videoService.getVideoDetails(id).subscribe((video) => {
-        this.video = video;
-      })
+      this.videoService.getVideoDetails(id).pipe(
+        tap((video) => {
+          this.video = video;
+        })
+      ).subscribe();
     }
   }
 
   addToMyVideos(): void {
     if (this.video) {
-      this.accountService.saveVideo(this.video.id).subscribe((result) => {
-        if (result) {
-          console.log('Video added to my videos');
-        } else {
-          console.log('Failed to add video to my videos');
-        }
-      })
+      this.accountService.saveVideo(this.video.id)
+      .pipe(
+        tap((isSuccess) => {
+          if (isSuccess) {
+            console.log('Video added to my videos');
+          } else {
+            console.log('Failed to add video to my videos');
+          }
+        }),
+        tap(() => {
+          const currentVideoCount = this.accountService.getVideos().length;
+          this.videoCounterService.updateVideoCount(currentVideoCount);
+        }),
+        tap(() => this.router.navigate(['/']))
+      )
+      .subscribe();
     }
   }
 }
