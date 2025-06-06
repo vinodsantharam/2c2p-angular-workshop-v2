@@ -62,6 +62,5 @@ export class TileVideosComponent {
   onAddToList(video: TileVideoViewModel) {
     this.addToList.emit(video);
     console.log('Adding to list:', video);
-    // Add any visual feedback or disable logic here if needed
   }
 }

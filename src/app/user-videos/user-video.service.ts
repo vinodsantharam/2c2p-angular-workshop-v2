@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { AccountService } from "../../services/account.service";
 import { UserVideoViewModel } from "./video.model";
+import { TileVideoViewModel } from "../tile-videos/tile-video.viewmodel";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -43,5 +45,9 @@ export class UserVideoService {
 
   public deleteVideo(videoToDelete: UserVideoViewModel) {
     this.accountService.removeVideo(videoToDelete.id);
+  }
+
+  public addVideo(video: TileVideoViewModel): Observable<boolean> {
+    return this.accountService.saveVideo(video.id);
   }
 }
