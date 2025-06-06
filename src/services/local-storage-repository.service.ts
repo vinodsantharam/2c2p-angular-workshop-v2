@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { VideoLookupResult } from './video-lookup.model';
+import { VideoLookupResult } from './models/video-lookup.model';
 
 @Injectable({
   providedIn: 'root'

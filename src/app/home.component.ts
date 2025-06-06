@@ -44,5 +44,3 @@ export class HomeComponent implements OnInit {
     });
   }
 }
-
-// https://api.open-meteo.com/v1/forecast?latitude=13.736717&longitude=100.523186&current=temperature_2m

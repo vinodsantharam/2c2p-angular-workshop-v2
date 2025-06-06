@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SearchVideoResult } from './search-video.model';
-import { VideoLookupResult } from './video-lookup.model';
+import { SearchVideoResult } from './models/search-video.model';
+import { VideoLookupResult } from './models/video-lookup.model';
 
 @Injectable({
   providedIn: 'root'

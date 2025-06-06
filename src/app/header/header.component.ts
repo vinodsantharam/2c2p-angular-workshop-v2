@@ -1,16 +1,19 @@
 import { Component, Renderer2, Inject, PLATFORM_ID, OnInit } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
+import { LucideAngularModule } from 'lucide-angular';
+import { HeaderInformationComponent } from "./header-information.component";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule, HeaderInformationComponent],
   template: `
     <header class="bg-gray-100 dark:bg-gray-800 shadow-md">
       <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
         <a href="#" class="text-xl font-bold text-gray-800 dark:text-white">Logo</a>
+        <app-header-information></app-header-information>
         <button (click)="toggleDarkMode()" class="px-4 py-2 rounded bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-white">
-          {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+          <lucide-icon [name]="isDarkMode ? 'sun' : 'moon'"></lucide-icon>
         </button>
       </nav>
     </header>

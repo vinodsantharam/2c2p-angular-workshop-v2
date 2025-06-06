@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageRepositoryService } from './local-storage-repository.service';
 import { VideoService } from './video.service';
-import { VideoLookupResult } from './video-lookup.model';
-import { map, Observable, tap } from 'rxjs';
+import { VideoLookupResult } from './models/video-lookup.model';
+import { map, Observable } from 'rxjs';
   
 @Injectable({
   providedIn: 'root'
