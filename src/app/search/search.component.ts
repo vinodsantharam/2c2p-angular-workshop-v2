@@ -43,8 +43,12 @@ export class SearchComponent implements OnInit {
   searchForm!: FormGroup;
 
   ngOnInit(): void {
+    // COMPLEXITY: LOW 🤏🏾🤏🏾🤏🏾
+    // We want to create a form group with a search term field.
+    // The search term field should be required and have a minimum length of 3 characters.
+    // Hint: Use the documentation to add the proper validators.
     this.searchForm = new FormGroup({
-      searchTerm: new FormControl('', [Validators.required, Validators.minLength(3)])
+      searchTerm: new FormControl('', [Validators.required])
     });
   }
 
@@ -64,7 +68,10 @@ export class SearchComponent implements OnInit {
     if (this.searchForm.valid) {
       const searchTermValue = this.searchTerm.value;
       if (searchTermValue) {
-        this.searchSubmitted.emit(searchTermValue);
+        // COMPLEXITY: LOW 🤏🏾🤏🏾🤏🏾
+        // We want to emit the search term value to the parent component.
+        // The parent component should be able to use the search term value to search for videos.
+        // Hint: Look the class properties 😜
         console.log('Search submitted:', searchTermValue);
       }
     }
