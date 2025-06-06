@@ -17,8 +17,8 @@ import { VideoCounterService } from "../services/video-counter.service";
   imports: [SearchComponent, TileVideosComponent, UserVideosComponent],
   template: `
     <app-search (searchSubmitted)="onSearchPerformed($event)"></app-search>
-    <app-tile-videos [videos]="searchResultTileVideosViewModels" (addToList)="onAddToList($event)"></app-tile-videos>
-    <app-user-videos [videos]="userVideos" (viewDetails)="onViewVideoDetails($event)" (deleteVideo)="onDeleteVideo($event)"></app-user-videos>
+    <app-tile-videos></app-tile-videos>
+    <app-user-videos></app-user-videos>
   `,
 })
 export class HomeComponent implements OnInit {
@@ -45,24 +45,27 @@ export class HomeComponent implements OnInit {
     this.userVideoService.addVideo($event).pipe(
       filter((result) => result), 
       tap(() => this.userVideos = this.getUserVideos()),
-      tap(() => this.updateVideoCount(this.userVideos.length))
     ).subscribe();
   }
 
   onViewVideoDetails(video: UserVideoViewModel) {
-    this.router.navigate(['/video', video.id]);
+    // COMPLEXITY: MEDIUM 🆗🆗🆗
+    // We want to navigate to the video detail page.
+    // The route should be dynamic and should take the id from the url.
+    // Hint: Use the router to navigate to the video detail page.
   }
 
   onDeleteVideo(videoToDelete: UserVideoViewModel) {
     this.userVideoService.deleteVideo(videoToDelete);
     this.userVideos = this.getUserVideos();
-    this.updateVideoCount(this.userVideos.length);
   }
 
   private searchVideos(searchTerm: string) {
-    this.videoService.getTileVideoViewModels(searchTerm).subscribe((videos) => {
-      this.searchResultTileVideosViewModels = videos;
-    });
+    // COMPLEXITY: LOW 🤏🏾🤏🏾🤏🏾
+    // We want to search for videos based on the search term.
+    // The search term should be passed to the service.
+    // The list of videos should be displayed in the tile videos component.
+    // Hint: Find the right service to use. Find the right component to use.
   }
 
   private getUserVideos(): UserVideoViewModel[] {

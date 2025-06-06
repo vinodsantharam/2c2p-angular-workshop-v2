@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { WeatherService } from '../../services/weather.service';
-import { combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HeaderInformationViewModel } from './header-information.viewmodel';
 import { VideoCounterService } from '../../services/video-counter.service';
 
@@ -15,11 +14,13 @@ export class HeaderInformationService {
   constructor(private weatherService: WeatherService, private videoCounterService: VideoCounterService) { }
 
   getHeaderInformation(): Observable<HeaderInformationViewModel> {
-    return combineLatest([
-      this.weatherService.getWeatherByCoordinates(this.latitude, this.longitude).pipe(
-        map((weather) => ({ weatherTemperature: weather.current.temperature_2m.toString() }))
-      ),
-      this.videoCounterService.videoCountObservable()
-    ]).pipe(map(([weather, videoCount]) => ({ weatherTemperature: weather.weatherTemperature, videoCount: videoCount ?? 0 })));  
+
+    // Complexity: HIGH 💪🏾💪🏾💪🏾
+    // We want to get the weather temperature and video count from 2 different services.
+    // We want to combine the results and return a single observable.
+    // The count should be updated when the user adds or removes a video to their list.
+    // Hint: Use one of the rxjs operators we saw during the course.
+
+    return of({ weatherTemperature: '-25', videoCount: -10 }); 
   }
 }   
